@@ -13,13 +13,23 @@ class User(db.Model): #create 'User' class to help in creating new users
 
 class Pitch(db.Model):
     #List of pitches
+
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String(255))
     comment = db.Column(db.String)
     category = db.Column(db.String)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
-    vote = db.Column()
+    user_id = db.Column(db.String, db.ForeignKey('user.id'))
+    vote = db.Column(db.Integer)
 
 
+class Comment(db.Model):
+    #User comments
+
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer,primary_key = True)
+    feedback = db.column(db.String)
+    user_id = db.Column(db.String(255), db.ForeignKey('user.id'))
+    time_posted = db.Column(db.dateTime)
