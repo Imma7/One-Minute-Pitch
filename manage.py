@@ -2,13 +2,16 @@
 from flask_script import Manager,Server
 from app import create_app,db #import db instance from app/__init__
 from app.models import User,Comment,Pitch #import User class from app/models file
+from flask_migrate import Migrate, MigrateCommand
 
 #Creating app instance          
 app = create_app('development')
 
 manager = Manager(app)
+migrate = Migrate(app,db)
 
 manager.add_command('server', Server)
+manager.add_command('db',MigrateCommand)
 
 @manager.shell #manage.shell decorator to create a shell context
 def make_shell_context(): #make_shell_context function to pass in properties in our shell
