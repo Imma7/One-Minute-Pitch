@@ -1,5 +1,9 @@
+import os #import os module that allows our app to interact with the OS dependent functionality
+
 class Config:
-    pass
+    
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://immanuel:21781845@localhost/pitchdb'
 
 class ProdConfig(Config):
     pass
@@ -9,3 +13,7 @@ class DevConfig(Config):
 
 config_options ={"production":ProdConfig,"default":DevConfig}
 
+config_options = {
+'development':DevConfig,
+'production':ProdConfig
+}
