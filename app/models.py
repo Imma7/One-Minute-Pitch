@@ -22,7 +22,7 @@ class Pitch(db.Model):
     category = db.Column(db.String)
     user_id = db.Column(db.String, db.ForeignKey('user.id'))
     vote = db.Column(db.Integer)
-
+    users = db.relationship('User', backref='pitch', lazy='dynamic')
 
 class Comment(db.Model):
     #User comments
@@ -33,3 +33,4 @@ class Comment(db.Model):
     feedback = db.column(db.String)
     user_id = db.Column(db.String(255), db.ForeignKey('user.id'))
     time_posted = db.Column(db.dateTime)
+    pitches = db.relationship('Pitch', backref='comment' lazy='dynamic')
