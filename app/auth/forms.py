@@ -24,3 +24,11 @@ class RegistrationForm(FlaskForm): #Creating Registration form class
         if User.query.filter_by(username = data_field.data).first():
             raise ValidationError('That username is taken')
 #If a method inside a form class begins with validate it is considered as a validator and is run with the other validators for that input field
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Your Email Address',validators=[Required(),Email()])
+    password = PasswordField('Password',validators=[Required()])
+    remember = BooleanField('Remember me')
+    submit = SubmitField('Sign In')
+    #input fields for the users email,password and a boolean to confirm whether the user wants to be logged out after the session
