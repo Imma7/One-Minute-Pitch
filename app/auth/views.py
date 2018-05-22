@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template,
 from . import auth
 
 
@@ -19,6 +19,20 @@ def register():
     return render_template('auth/register.html',registration_form=form,title=title)
 
 
-@auth.route('/login')
-def login(): #login view function that renders a template a template file
-    return render_template('auth/login.html')
+# Login function
+@auth.route('/login',methods=['GET','POST'])
+def login():
+    '''
+    Function that checks if the form is validated
+    '''
+    login_form=LoginForm()
+    if login_form.validate_on_submit():
+        user=User.query.filter_by(email=login_form.email.data).first()
+        if user is not None and user.verify_password(login_form.password.data):
+            login_user(user,login_form.remember.data)
+            return redirect(request.args.get('next')or url_for('main.index'))
+
+        flash('invalid username or password')
+
+    title ="One Minute Pitch|Login"
+    return render_template('auth/login.html',login_form=login_form,title=title)
