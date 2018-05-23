@@ -3,7 +3,7 @@ import os #import os module that allows our app to interact with the OS dependen
 class Config:
     
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://immanuel:21781845@localhost/pitchdb'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://immanuel:7007@localhost/pitchdb'
 
 class ProdConfig(Config):
     pass

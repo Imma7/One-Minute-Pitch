@@ -1,30 +1,32 @@
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
+from datetime import datetime
 
 
 class User(db.Model): #create 'User' class to help in creating new users
    
     __tablename__ = 'users' #__tablename__ variable allows us to give the tables in our db proper names
+
     id = db.Column(db.Integer,primary_key = True) #create columns using db.Column class which represents a single column.db.Integer specifies data to be stored
     username = db.Column(db.String(255)) #db.String class specifies data to be a string with 255 characters maximum
     email = db.Column(db.String)
     password_hash = db.Column(db.String)
     pass_secure = db.Column(db.String(255))
+    pitches = db.relationship('Pitch', backref='pitch', lazy='dynamic')
+    comments = db.relationship("Comment", backref="user", lazy = "dynamic")
 
 
-    pass_secure  = db.Column(db.String(255))
+    @property #@property decorator creates a write only class property 'password'
+    def password(self):
+        raise AttributeError('You cannot read the password attribute')
 
-        @property #@property decorator creates a write only class property 'password'
-        def password(self):
-            raise AttributeError('You cannot read the password attribute')
-
-        @password.setter
-        def password(self, password):
-            self.pass_secure = generate_password_hash(password)
+    @password.setter
+    def password(self, password):
+        self.pass_secure = generate_password_hash(password)
 
 
-        def verify_password(self,password):
-            return check_password_hash(self.pass_secure,password)
+    def verify_password(self,password):
+        return check_password_hash(self.pass_secure,password)
 
     def __repr__(self): #repr method easens debugging of our application
         return f'User {self.username}'
@@ -37,11 +39,27 @@ class Pitch(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String(255))
-    comment = db.Column(db.String)
+    commentcommencommen = db.Column(db.String)
     category = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     vote = db.Column(db.Integer)
-    users = db.relationship('User', backref='pitch', lazy='dynamic')
+    comments = db.relationship("Comment", backref="pitches", lazy = "dynamic")
+    vote = db.relationship("Votes", backref="pitches", lazy = "dynamic")
+
+    def save_pitch(self):
+        ''' Save the pitches '''
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def clear_pitches(cls):
+        Pitch.all_pitches.clear()
+
+    # display pitches
+
+    def get_pitches(id):
+        pitches = Pitch.query.filter_by(category_id=id).all()
+        return pitches
 
 
 class Comment(db.Model):
@@ -51,6 +69,42 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     feedback = db.column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     time_posted = db.Column(db.DateTime)
-    pitches = db.relationship('Pitch', backref='comment', lazy='dynamic')
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pitches_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
+    
+    def save_comment(self):
+        '''
+        Function that saves comments
+        '''
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(self, id):
+        comment = Comments.query.order_by(
+            Comments.time_posted.desc()).filter_by(pitches_id=id).all()
+        return comment
+
+
+class Category(db.Model):
+    #User comments
+
+    
+    __tablename__ = 'categories'
+
+    id = db.Column(db.Integer,primary_key = True)
+    category_name= db.Column(db.String)
+
+    # save pitches
+    def save_category(self):
+        db.session.add(self)
+        db.session.commit()
+        
+    @classmethod
+    def get_categories(cls):
+        categories = Category.query.all()
+        return categories
+
+
+  

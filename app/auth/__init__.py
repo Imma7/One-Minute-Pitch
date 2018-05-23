@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint #create a Blueprint instance auth
 
 auth = Blueprint('auth',__name__)
 
