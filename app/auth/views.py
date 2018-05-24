@@ -4,6 +4,17 @@ from flask_login import login_user,logout_user,login_required
 from ..models import User
 from .forms import LoginForm,RegistrationForm
 from .. import db
+from app import login_manager
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    '''
+    @login_manager.user_loader Passes in a user_id to this function
+    Function queries the database and gets a user's id as a response
+    '''
+    return User.query.get(user_id)
+
 
 # registration route
 @auth.route('templates/auth/reqister',methods=['GET','POST'])

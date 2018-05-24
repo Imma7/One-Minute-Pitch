@@ -2,28 +2,48 @@
 {% import 'macros.html' as macro %}
 
 {% block styles%}
-    {{ super() }} <!--super() function tells inja not to override any code that is defined in the block-->
+    {{ super() }} <!--super() function tells Jinja not to override any code that is defined in the block-->
     <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
 {% endblock %}
 
 
 {% block content %}
+ 
+    <br>
+    <div class="container-fluid" style="font-family: 'Russo One', sans-serif;">
+      <div class="row" style="margin-top:30px"> 
+        
+          <div class="container" id="block-text">
+            <br>
+            <div class="col-md-4">
+              <img src="/static/images/minute.jpg" />
+            </div>
 
-    <div class="container" style="font-family: 'Russo One', sans-serif;">
-      <div class="row" style="margin-top:30px">
-          <div class="col-md-8">
-                {{ macro.displayCategoryList(categories) }}
-          </div>
-
-          <div class="col-md-4">
-                <h3 class="text-left"><a class="btn btn-primary" href="/add/category"><span class="glyphicon glyphicon-plus" aria-hidden="true">   Add Category </span></a></h3>
-          </div>
-          
+            <br>
+            <div class="col-md-4">
+            <p> In life you only have 60 seconds to impress someone. 1 minute to make or break you. How do we make sure that you use your 1 minute to actually say something meaningful? </p>
+            </div>
         </div>
+
+          
+            
+          
+          <hr>
+
+          <div class="container">
+            <h3 class="add-category"><a class="btn btn-primary" href="/add/category"><span aria-hidden="true"> ADD CATEGORY </span></a></h3>
+          </div>
+            {{ macro.displayCategoryList(categories) }}
+          
+          <!--<footer class="fixed-bottom">
+            <img src="/static/images/pitch.png" />
+          </footer> -->
+      </div>
+      </div>
     </div>
 {% endblock %}
 
-{% endblock %}
+
 {% macro displayPitches(pitch_list) %}
   {% for pitches in pitch_list %}
     <div class="col-md-6">

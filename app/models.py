@@ -1,9 +1,12 @@
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from datetime import datetime
+from sqlalchemy.sql import func
+from flask_login import UserMixin
 
 
-class User(db.Model): #create 'User' class to help in creating new users
+
+class User(UserMixin,db.Model): #create 'User' class to help in creating new users
    
     __tablename__ = 'users' #__tablename__ variable allows us to give the tables in our db proper names
 
@@ -39,7 +42,7 @@ class Pitch(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String(255))
-    commentcommencommen = db.Column(db.String)
+    comment = db.Column(db.String)
     category = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     vote = db.Column(db.Integer)
@@ -88,8 +91,7 @@ class Comment(db.Model):
 
 
 class Category(db.Model):
-    #User comments
-
+    #pitch Categories
     
     __tablename__ = 'categories'
 
@@ -108,3 +110,24 @@ class Category(db.Model):
 
 
   
+#votes
+class Votes(db.Model):
+    '''
+    class to model votes 
+    '''
+    
+    __tablename__='votes'
+
+    id = db.Column(db. Integer, primary_key=True)
+    vote = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    pitches_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
+
+    def save_vote(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_votes(cls,user_id,pitches_id):
+        votes = Vote.query.filter_by(user_id=user_id, pitches_id=pitches_id).all()
+        return votes

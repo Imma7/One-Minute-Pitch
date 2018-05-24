@@ -1,0 +1,24 @@
+.navbar.transparent.navbar-inverse .navbar-inner .navbar-fixed-top{
+    background-color: black;
+}
+ 
+
+
+#block-text{
+    padding-top: 20px;
+    font-size: large;
+}
+
+.sign{
+    color: black;
+    font-size: 20px;
+}
+  
+
+.footer{
+    position: bottom;
+}
+
+add-category{
+    float: right;
+}

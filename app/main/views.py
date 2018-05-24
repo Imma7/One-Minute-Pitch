@@ -2,9 +2,17 @@ from flask import render_template, request, redirect, url_for, abort
 from . import main
 from ..models import User,Pitch,Comment,Category
 from .. import db
-from ..models import Pitch, Comment, Category
+# from ..models import Pitch, Comment, Category
 from flask_login import login_required,current_user
+from app import login_manager
 
+@login_manager.user_loader
+def load_user(user_id):
+    '''
+    @login_manager.user_loader Passes in a user_id to this function
+    Function queries the database and gets a user's id as a response
+    '''
+    return User.query.get(user_id)
 
 #Displaying pitch categories on the home page
 @main.route('/')
@@ -60,7 +68,7 @@ def new_category():
     form = CategoryForm()
 
     if form.validate_on_submit():
-        name = form.name.data
+        name = form.data.name
         new_category = PitchCategory(name=name)
         new_category.save_category()
 
@@ -93,7 +101,8 @@ def view_pitch(id):
 @main.route('/write_comment/<int:id>', methods=['GET', 'POST'])
 @login_required
 def post_comment(id):
-    ''' function to post comments '''
+    ''' function to post comments
+    '''
     form = CommentForm()
     title = 'post comment'
     pitches = Pitch.query.filter_by(id=id).first()
