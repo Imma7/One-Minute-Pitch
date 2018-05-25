@@ -1,6 +1,6 @@
 from flask import render_template,redirect,url_for,flash,request
 from . import auth
-from flask_login import login_user,logout_user,login_required
+from flask_login import login_user,logout_user,login_required, current_user
 from ..models import User
 from .forms import LoginForm,RegistrationForm
 from .. import db
@@ -17,11 +17,13 @@ def load_user(user_id):
 
 
 # registration route
-@auth.route('templates/auth/reqister',methods=['GET','POST'])
+@auth.route('/reqister',methods=['GET','POST'])
 def register():
     '''
     function that registaers the users
     '''
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     form =RegistrationForm()
     if form.validate_on_submit():
         user =User(email=form.email.data,username=form.username.data,password=form.password.data)
@@ -39,6 +41,8 @@ def login():
     '''
     Function that checks if the form is validated
     '''
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     login_form=LoginForm()
     if login_form.validate_on_submit():
         user=User.query.filter_by(email=login_form.email.data).first()

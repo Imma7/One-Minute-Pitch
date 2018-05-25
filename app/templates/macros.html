@@ -38,3 +38,9 @@
     </div>
   {% endfor %}
 {% endmacro %}
+
+{% macro displayCategories(categories)%}
+  {% for category in categories %}
+    <p>{{category.category_name}}</p>
+  {% endfor %}
+{% endmacro %}

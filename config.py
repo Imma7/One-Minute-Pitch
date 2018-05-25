@@ -2,8 +2,12 @@ import os #import os module that allows our app to interact with the OS dependen
 
 class Config:
     
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    # SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = os.urandom(24)
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://immanuel:7007@localhost/pitchdb'
+    # WTF_CSRF_SECRET_KEY="a csrf secret key"
+
+
 
 class ProdConfig(Config):
     pass

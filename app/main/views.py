@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, url_for, abort
 from . import main
 from ..models import User,Pitch,Comment,Category
 from .. import db
+from .forms import CommentForm, CategoryForm, PitchForm
 # from ..models import Pitch, Comment, Category
 from flask_login import login_required,current_user
 from app import login_manager
@@ -68,14 +69,15 @@ def new_category():
     form = CategoryForm()
 
     if form.validate_on_submit():
-        name = form.data.name
-        new_category = PitchCategory(name=name)
+        name = form.name.data
+        new_category = Category(category_name=name)
         new_category.save_category()
 
-        return redirect(url_for('.index'))
+        return redirect(url_for('.new_category'))
 
+    all_categories = Category.query.order_by('-id').all()
     title = 'New category'
-    return render_template('new_category.html', category_form = form,title=title)
+    return render_template('new_category.html', category_form = form,title=title, categories = all_categories )
 
 
     
@@ -86,6 +88,7 @@ def view_pitch(id):
     '''
     Function the returns a single pitch for comment to be added
     '''
+
     print(id)
     pitches = Pitch.query.get(id)
     # pitches = Pitch.query.filter_by(id=id).all()

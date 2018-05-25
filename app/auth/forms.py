@@ -7,10 +7,9 @@ from ..models import User
 #Registration Input Fields
 class RegistrationForm(FlaskForm): #Creating Registration form class
     email = StringField('Your Email Address',validators=[Required(),Email()]) #input field email passing in required and email validators 
-    username = PasswordField('Password',validators=[Required()]) #input username field
-    password = PasswordField('Password',validators=[Required]) #input password field
-    EqualTo('password_confirm',message="Passwords must match") #passing in EqualTo validator to password to ensure both passwords are the same before form is submitted
-    password_confirm = PasswordField('Confirm Passwords',validators=[Required]) #input password confirm field
+    username = StringField('Username',validators=[Required()]) #input username field
+    password = PasswordField('Password',validators=[Required(),EqualTo('password_confirm',message="Passwords must match")]) #input password field
+    password_confirm = PasswordField('Confirm Passwords',validators=[Required()]) #input password confirm field
     submit = SubmitField('Sign Up')
 
 
