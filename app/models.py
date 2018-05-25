@@ -13,7 +13,7 @@ class User(UserMixin,db.Model): #create 'User' class to help in creating new use
     id = db.Column(db.Integer,primary_key = True) #create columns using db.Column class which represents a single column.db.Integer specifies data to be stored
     username = db.Column(db.String(255)) #db.String class specifies data to be a string with 255 characters maximum
     email = db.Column(db.String)
-    password_hash = db.Column(db.String)
+    # password_hash = db.Column(db.String)
     pass_secure = db.Column(db.String(255))
     pitches = db.relationship('Pitch', backref='pitch', lazy='dynamic')
     comments = db.relationship("Comment", backref="user", lazy = "dynamic")
