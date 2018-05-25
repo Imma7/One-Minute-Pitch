@@ -13,3 +13,7 @@ class CommentForm():
     comment = TextAreaField('Comment', validators=[Required()])
     submit = SubmitField()
     vote=RadioField('default field arguments', choices=[('1', 'UpVote'), ('1', 'DownVote')])
+
+class CategoryForm():
+    category_id = TextAreaField()
+    comment = TextAreaField()
